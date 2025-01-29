@@ -165,6 +165,7 @@ class _ExecutorRequestDetailsPageState extends State<ExecutorRequestDetailsPage>
   Widget build(BuildContext context) {
     if (isLoading) {
       return Scaffold(
+        backgroundColor: Color(0xFFFFFFFF),
         appBar: AppBar(title: const Text('Детали заявки')),
         body: const Center(child: CircularProgressIndicator()),
       );
@@ -180,6 +181,7 @@ class _ExecutorRequestDetailsPageState extends State<ExecutorRequestDetailsPage>
     final executor = requestDetails?['executor'];
 
     return Scaffold(
+       backgroundColor: Color(0xFFFFFFFF),
       appBar: AppBar(
         title: const Text('Детали заявки'),
         backgroundColor: Colors.white,

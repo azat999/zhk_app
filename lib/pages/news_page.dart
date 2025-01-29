@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:zhk_app/pages/AddNewsPage.dart';
 import 'package:zhk_app/services/UserRoleProvider.dart';
 import '../models/news_model.dart';
 import '../widgets/news_item.dart';
@@ -41,6 +42,10 @@ class _NewsPageState extends State<NewsPage> {
   }
 
   void _navigateToAddNews() {
+    Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => AddNewsPage()),
+  );
     print('Переход на экран добавления новости');
   }
 
