@@ -236,19 +236,22 @@ class _ExecutorRequestDetailsPageState extends State<ExecutorRequestDetailsPage>
             ),
             const SizedBox(height: 4),
             DropdownButton<String>(
-              value: selectedStatus,
-              items: const [
-                DropdownMenuItem(value: 'created', child: Text('Подана')),
-                DropdownMenuItem(value: 'in_progress', child: Text('В процессе')),
-                DropdownMenuItem(value: 'completed', child: Text('Завершена')),
-                DropdownMenuItem(value: 'rejected', child: Text('Отклонена')),
-              ],
-              onChanged: (value) {
-                setState(() {
-                  selectedStatus = value;
-                });
-              },
-            ),
+  value: selectedStatus,
+  items: const [
+    DropdownMenuItem(value: 'created', child: Text('Подана')),
+    DropdownMenuItem(value: 'in_progress', child: Text('В процессе')),
+    DropdownMenuItem(value: 'completed', child: Text('Завершена')),
+    DropdownMenuItem(value: 'rejected', child: Text('Отклонена')),
+    DropdownMenuItem(value: 'responsible_added', child: Text('Ответственный назначен')),
+    DropdownMenuItem(value: 'responsible_change', child: Text('Ответственный переназначен')),
+  ],
+  onChanged: (value) {
+    setState(() {
+      selectedStatus = value;
+    });
+  },
+),
+
             const Spacer(),
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -299,7 +302,7 @@ class _ExecutorRequestDetailsPageState extends State<ExecutorRequestDetailsPage>
                 const SizedBox(height: 10),
                 Container(
                   height: 48,
-                      width: 320,
+                      width: 326,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(25),
