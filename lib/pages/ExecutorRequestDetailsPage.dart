@@ -299,7 +299,7 @@ class _ExecutorRequestDetailsPageState extends State<ExecutorRequestDetailsPage>
                 const SizedBox(height: 10),
                 Container(
                   height: 48,
-                      width: 326,
+                      width: 320,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(25),
