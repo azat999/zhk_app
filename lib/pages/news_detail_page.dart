@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:zhk_app/pages/EditNewsPage.dart';
 
 class NewsDetailPage extends StatefulWidget {
   final int newsId;
@@ -43,12 +44,40 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
     }
   }
 
-  void _navigateToEditNews() {
-    // Навигация на страницу редактирования новости
-    debugPrint('Переход на экран редактирования новости');
-    // Реализуйте переход на страницу редактирования
-    // Navigator.push(...);
+  void _navigateToEditNews() async {
+  // Дожидаемся завершения Future и получения данных
+  final newsData = await _newsDetail;
+
+  if (newsData['title'] != null &&
+      newsData['short_description'] != null &&
+      newsData['description'] != null) {
+    // Переходим на страницу редактирования с передачей данных
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EditNewsPage(news: {
+          'id': newsData['id'], // Передаем ID новости
+          'title': newsData['title'],
+          'short_description': newsData['short_description'],
+          'description': newsData['description'],
+        }),
+      ),
+    );
+
+    // Проверяем результат и обновляем данные, если нужно
+    if (result == true) {
+      setState(() {
+        _newsDetail = fetchNewsDetail(widget.newsId);
+      });
+    }
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Данные для редактирования недоступны'),
+      ),
+    );
   }
+}
 
   @override
   Widget build(BuildContext context) {
