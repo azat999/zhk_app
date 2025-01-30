@@ -4,6 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:zhk_app/pages/AdminComplaintsPage.dart';
+import 'package:zhk_app/pages/ComplaintsSuggestionsPage.dart';
 import 'package:zhk_app/pages/admin_executor_requests_page.dart';
 import 'package:zhk_app/pages/login_page.dart';
 import 'package:zhk_app/pages/resident_requests_page.dart';
@@ -260,49 +262,73 @@ class _MenuPageState extends State<MenuPage> {
   }
 
   Widget _buildMenuTile(String svgIconPath, String title) {
-    return GestureDetector(
-      onTap: () async {
-        if (title == 'Заявки') {
-          final prefs = await SharedPreferences.getInstance();
-          final userRole = prefs.getString('user_role');
+  return GestureDetector(
+    onTap: () async {
+      final prefs = await SharedPreferences.getInstance();
+      final userRole = prefs.getString('user_role');
 
-          if (userRole == 'resident') {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ResidentRequestsPage(),
-              ),
-            );
-          } else if (userRole == 'admin' || userRole == 'executor') {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => AdminExecutorRequestsPage(userRole: ''),
-              ),
-            );
-          }
+      if (title == 'Жалобы/Предложения') {
+        if (userRole == 'resident') {
+          // Для жителей
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ComplaintsSuggestionsPage(),
+            ),
+          );
+        } else if (userRole == 'admin') {
+          // Для администраторов
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AdminComplaintsPage(), // Страница для админа
+            ),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Доступно только для жителей и администраторов')),
+          );
         }
-      },
-      child: SizedBox(
-        height: 60,
-        width: 350,
-        child: Container(
-          decoration: _tileDecoration(),
-          child: ListTile(
-            leading: SvgPicture.asset(
-              svgIconPath,
-              width: 30,
-              height: 30,
+      } else if (title == 'Заявки') {
+        if (userRole == 'resident') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ResidentRequestsPage(),
             ),
-            title: Text(
-              title,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          );
+        } else if (userRole == 'admin' || userRole == 'executor') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AdminExecutorRequestsPage(userRole: ''),
             ),
+          );
+        }
+      }
+    },
+    child: SizedBox(
+      height: 60,
+      width: 350,
+      child: Container(
+        decoration: _tileDecoration(),
+        child: ListTile(
+          leading: SvgPicture.asset(
+            svgIconPath,
+            width: 30,
+            height: 30,
+          ),
+          title: Text(
+            title,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
+
+
 
   BoxDecoration _tileDecoration() {
     return BoxDecoration(
