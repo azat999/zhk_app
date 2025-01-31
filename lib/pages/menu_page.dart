@@ -6,6 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:zhk_app/pages/AdminComplaintsPage.dart';
 import 'package:zhk_app/pages/ComplaintsSuggestionsPage.dart';
+import 'package:zhk_app/pages/CreateVotingPage.dart';
+import 'package:zhk_app/pages/VotingPage.dart';
 import 'package:zhk_app/pages/admin_executor_requests_page.dart';
 import 'package:zhk_app/pages/login_page.dart';
 import 'package:zhk_app/pages/resident_requests_page.dart';
@@ -267,9 +269,31 @@ class _MenuPageState extends State<MenuPage> {
       final prefs = await SharedPreferences.getInstance();
       final userRole = prefs.getString('user_role');
 
-      if (title == 'Жалобы/Предложения') {
+      if (title == 'Голосование') {
+        if (userRole == 'admin') {
+          // Переход на страницу создания голосования для администратора
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CreateVotingPage(), // Страница создания голосования
+            ),
+          );
+        } else if (userRole == 'resident') {
+          // Переход на страницу просмотра голосований для жителей
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => VotingPage(), // Страница просмотра голосований
+            ),
+          );
+        } else {
+          // Показываем сообщение для других ролей
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Доступно только для администратора и жителей')),
+          );
+        }
+      } else if (title == 'Жалобы/Предложения') {
         if (userRole == 'resident') {
-          // Для жителей
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -277,16 +301,11 @@ class _MenuPageState extends State<MenuPage> {
             ),
           );
         } else if (userRole == 'admin') {
-          // Для администраторов
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => AdminComplaintsPage(), // Страница для админа
+              builder: (context) => AdminComplaintsPage(),
             ),
-          );
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Доступно только для жителей и администраторов')),
           );
         }
       } else if (title == 'Заявки') {
@@ -327,6 +346,7 @@ class _MenuPageState extends State<MenuPage> {
     ),
   );
 }
+
 
 
 
