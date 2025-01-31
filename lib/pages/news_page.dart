@@ -90,7 +90,7 @@ class _NewsPageState extends State<NewsPage> {
                     style: TextStyle(
                       color: Color(0xFFF2E594),
                       fontSize: 20,
-                      fontWeight: FontWeight.w700,
+                      fontWeight: FontWeight.bold,
                       fontFamily: 'InstrumentSans',
                     ),
                   ),
